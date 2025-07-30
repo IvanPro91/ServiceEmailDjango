@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 import os
 from pathlib import Path
 
-from django.conf.global_settings import STATICFILES_DIRS
+from django.conf.global_settings import STATICFILES_DIRS, LOGOUT_REDIRECT_URL
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "user",
+    "recipients",
+    "mailing",
 ]
 
 MIDDLEWARE = [
@@ -134,6 +136,7 @@ STATIC_URL = "static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 MEDIA_URL = "media/"
 MEDIA_ROOT = [BASE_DIR / "media"]
+LOGOUT_REDIRECT_URL = '/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 AUTH_USER_MODEL = "user.User"
