@@ -1,11 +1,9 @@
 from django.contrib import auth
 from django.http import HttpRequest
 from django.shortcuts import render
-from django.views.decorators.csrf import csrf_exempt
 from django.views.defaults import permission_denied
 
 
-@csrf_exempt
 def login_user(request: HttpRequest):
     chk_post = request.POST
     if chk_post:

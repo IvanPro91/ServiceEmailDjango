@@ -1,0 +1,65 @@
+{% extends 'base_content.html' %}
+
+{% block content %}
+
+<div class="card">
+    <div class="card-header align-items-center">
+        <div class="navbar-nav-right d-flex align-items-center justify-content-end">
+            <a class="btn btn-primary text-white cursor-pointer" id="btn_create_message">Добавить сообщение</a>
+        </div>
+        <h5 class="card-action-title mb-5">Сообщения({{ object_list|length }})</h5>
+    </div>
+    <div class="card-body">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Тема</th>
+                <th>Сообщение</th>
+                <th>Действие</th>
+            </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+            {% for message in object_list %}
+            <tr>
+                <td>{{ message.theme }}</td>
+                <td>
+                    {{ message.body }}
+                </td>
+                <td>
+                    <div class="dropdown">
+                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                            <i class="icon-base bx bx-dots-vertical-rounded"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{{ message.pk }}"><i
+                                    class="icon-base bx bx-edit-alt me-1"></i> Редактировать</a>
+                            <a class="dropdown-item" href="{{ message.pk }}"><i
+                                    class="icon-base bx bx-trash me-1"></i> Удалить</a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+<script>
+    $("#btn_create_message").click(function(){
+        $.ajax({
+            url: location.origin + '/mailing/create_message',
+            method: 'get',
+            dataType: "html",
+            success: function(data){
+                $("#modal-cont").html(data)
+                $("#modal-mail").modal("show")
+            },
+            error: function (jqXHR, exception) {
+                alert('Uncaught Error. ' + jqXHR.responseText);
+            }
+        });
+    })
+</script>
+{% endblock content %}
