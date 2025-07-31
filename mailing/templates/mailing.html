@@ -1,0 +1,72 @@
+{% extends 'base_content.html' %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header align-items-center">
+        <div class="navbar-nav-right d-flex align-items-center justify-content-end">
+            <a class="btn btn-primary text-white cursor-pointer" id="btn_create_mailing">Добавить рассылку</a>
+        </div>
+        <h5 class="card-action-title mb-5">Рассылки(2)</h5>
+    </div>
+    <div class="card-body">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Номер рассылка</th>
+                <th>Тема</th>
+                <th>Сообщение</th>
+                <th>Статус</th>
+                <th>Действие</th>
+            </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+            <tr>
+                <td>
+                    #1
+                </td>
+                <td>Приветственное сообщение</td>
+                <td>
+                    Привет, дорогой друг, как поживаешь, пора переходить к учебе по Python
+                </td>
+                <td><span class="badge bg-label-primary me-1">Активная</span></td>
+                <td>
+                    <div class="dropdown">
+                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                            <i class="icon-base bx bx-dots-vertical-rounded"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="javascript:void(0);"><i
+                                    class="icon-base bx bx-edit-alt me-1"></i> Редактировать</a>
+                            <a class="dropdown-item" href="javascript:void(0);"><i
+                                    class="icon-base bx bx-trash me-1"></i> Удалить</a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    #2
+                </td>
+                <td>Сообщение партнерам</td>
+                <td>
+                    Привет, партнер, купи слона
+                </td>
+                <td><span class="badge bg-label-success me-1">Завершена</span></td>
+                <td>
+                    <div class="dropdown">
+                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                            <i class="icon-base bx bx-dots-vertical-rounded"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base bx bx-trash me-1"></i> Удалить</a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+
+    </div>
+</div>
+{% endblock content %}
