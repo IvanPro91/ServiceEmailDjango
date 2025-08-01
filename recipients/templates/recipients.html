@@ -1,53 +1,70 @@
 {% extends 'base_content.html' %}
 
 {% block content %}
+{% load split_fio %}
 <div class="card">
 <div class="card-header align-items-center">
-
     <div class="navbar-nav-right d-flex align-items-center justify-content-end">
-       <a class="btn btn-primary" href="javascript:void(0);">Добавить получателя</a>
+       <a class="btn btn-primary text-white cursor-pointer" id="btn_create_recipient" >Добавить получателя</a>
     </div>
-    <h5 class="card-action-title mb-5">Получатели(2)</h5>
+    <h5 class="card-action-title mb-5">Получатели({{ object_list|length }})</h5>
 </div>
 <div class="card-body">
     <ul class="list-unstyled mb-0">
+        {% for recipient in object_list %}
         <li class="mb-4">
             <div class="d-flex align-items-center">
                 <div class="d-flex align-items-center">
                    <div class="avatar avatar-sm me-3">
-                       <span class="avatar-initial rounded-circle bg-label-success">EM</span>
+                       <span class="avatar-initial rounded-circle bg-label-primary">{{ recipient.full_name|sp_fullname }}</span>
                    </div>
                     <div class="me-2">
-                        <h6 class="mb-0">Cecilia Payne</h6>
-                        <small>45 Connections</small>
+                        <h6 class="mb-0">{{ recipient.full_name }}</h6>
+                        <small>{{ recipient.email }}</small>
                     </div>
                 </div>
                 <div class="ms-auto">
-                    <button class="btn btn-label-primary btn-icon">
+                    <a class="btn btn-label-primary btn-icon btn_delete_recipient" id="{{ recipient.pk }}">
                         <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="red"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
-                    </button>
+                    </a>
                 </div>
             </div>
         </li>
-        <li class="mb-4">
-            <div class="d-flex align-items-center">
-                <div class="d-flex align-items-center">
-                   <div class="avatar avatar-sm me-3">
-                       <span class="avatar-initial rounded-circle bg-label-success">EM</span>
-                   </div>
-                    <div class="me-2">
-                        <h6 class="mb-0">Curtis Fletcher</h6>
-                        <small>1.32k Connections</small>
-                    </div>
-                </div>
-                <div class="ms-auto">
-                    <button class="btn btn-label-primary btn-icon">
-                        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="red"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
-                    </button>
-                </div>
-            </div>
-        </li>
+        {% endfor %}
     </ul>
 </div>
 </div>
+<script>
+
+    $(".btn_delete_recipient").click(function(){
+        let id_r = $(this).attr("id")
+        $.ajax({
+            url: location.origin + "/delete_recipient/" + id_r,
+            method: 'get',
+            dataType: "html",
+            success: function(data){
+                $("#modal-cont").html(data)
+                $("#modal-mail").modal("show")
+            },
+            error: function (jqXHR, exception) {
+                alert('Uncaught Error. ' + jqXHR.responseText);
+            }
+        });
+    })
+
+    $("#btn_create_recipient").click(function(){
+        $.ajax({
+            url: location.origin + "{% url 'recipients:create_recipient' %}",
+            method: 'get',
+            dataType: "html",
+            success: function(data){
+                $("#modal-cont").html(data)
+                $("#modal-mail").modal("show")
+            },
+            error: function (jqXHR, exception) {
+                alert('Uncaught Error. ' + jqXHR.responseText);
+            }
+        });
+    })
+</script>
 {% endblock content %}

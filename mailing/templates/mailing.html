@@ -15,58 +15,65 @@
                 <th>Номер рассылка</th>
                 <th>Тема</th>
                 <th>Сообщение</th>
+                <th>Получатели</th>
                 <th>Статус</th>
                 <th>Действие</th>
             </tr>
             </thead>
             <tbody class="table-border-bottom-0">
+            {% for mailing in object_list %}
             <tr>
                 <td>
-                    #1
+                    {{ mailing.pk }}
                 </td>
-                <td>Приветственное сообщение</td>
+                <td>{{ mailing.message.theme }}</td>
                 <td>
-                    Привет, дорогой друг, как поживаешь, пора переходить к учебе по Python
+                    {{ mailing.message.body }}
                 </td>
-                <td><span class="badge bg-label-primary me-1">Активная</span></td>
+                <td>
+                    {{ mailing.recipients.all|length }}
+                </td>
+                <td>
+                    {% if not mailing.status_ending %}
+                        <span class="badge bg-label-primary me-1">Активная</span>
+                    {% else %}
+                        <span class="badge bg-label-success me-1">Завершена</span>
+                    {% endif %}
+                </td>
                 <td>
                     <div class="dropdown">
                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                             <i class="icon-base bx bx-dots-vertical-rounded"></i>
                         </button>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="javascript:void(0);"><i
+                            <a class="dropdown-item" href="{{ mailing.pk }}"><i
                                     class="icon-base bx bx-edit-alt me-1"></i> Редактировать</a>
-                            <a class="dropdown-item" href="javascript:void(0);"><i
+                            <a class="dropdown-item" href="{{ mailing.pk }}"><i
                                     class="icon-base bx bx-trash me-1"></i> Удалить</a>
                         </div>
                     </div>
                 </td>
             </tr>
-            <tr>
-                <td>
-                    #2
-                </td>
-                <td>Сообщение партнерам</td>
-                <td>
-                    Привет, партнер, купи слона
-                </td>
-                <td><span class="badge bg-label-success me-1">Завершена</span></td>
-                <td>
-                    <div class="dropdown">
-                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                            <i class="icon-base bx bx-dots-vertical-rounded"></i>
-                        </button>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base bx bx-trash me-1"></i> Удалить</a>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-
+            {% endfor %}
             </tbody>
         </table>
 
     </div>
 </div>
+<script>
+    $("#btn_create_mailing").click(function(){
+        $.ajax({
+            url: location.origin + "{% url 'mailing:create_mailing' %}",
+            method: 'get',
+            dataType: "html",
+            success: function(data){
+                $("#modal-cont").html(data)
+                $("#modal-mail").modal("show")
+            },
+            error: function (jqXHR, exception) {
+                alert('Uncaught Error. ' + jqXHR.responseText);
+            }
+        });
+    })
+</script>
 {% endblock content %}

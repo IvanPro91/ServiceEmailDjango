@@ -4,3 +4,10 @@ class Recipient(models.Model):
     email = models.EmailField(verbose_name="Почта")
     full_name = models.CharField(max_length=200, verbose_name="ФИО")
     comments = models.TextField(verbose_name="Комментарий")
+
+    def __str__(self):
+        return self.full_name
+
+    class Meta:
+        verbose_name = "Получатель"
+        verbose_name_plural = "Получатели"

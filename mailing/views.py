@@ -1,39 +1,29 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.forms.boundfield import BoundWidget
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
 from django.views.generic import ListView, DetailView, DeleteView, UpdateView
 
-from mailing.forms import MessageForm
-from mailing.models import Mailing, Message
+from mailing.forms import MailingForm
+from mailing.models import Mailing
+from recipients.models import Recipient
 
 
 class MailingListView(ListView):
     model = Mailing
     template_name = "mailing.html"
-    pass
 
-class MessageListView(ListView):
-    model = Message
-    template_name = "message.html"
-    pass
 
 class MailingCreateView(CreateView):
     model = Mailing
+    form_class = MailingForm
     template_name = "create_mailing.html"
-    fields = "__all__"
-
-
-class MessageCreateView(LoginRequiredMixin,CreateView):
-    model = Message
-    form_class = MessageForm
-    template_name = "create_message.html"
-    success_url = reverse_lazy("mailing:message")
+    success_url = reverse_lazy("mailing:mailing")
 
     def form_valid(self, form):
-        message = form.save(commit=False)
-        message.owner = self.request.user
-        message.save()
-        print(message)
+        mailing: Mailing = form.save(commit=False)
+        mailing.owner = self.request.user
+        mailing.save()
+        form.save_m2m()
         return super().form_valid(form)
 
 class MailingDetailView(DetailView):
