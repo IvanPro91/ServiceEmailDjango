@@ -49,7 +49,7 @@
 <script>
     $("#btn_create_message").click(function(){
         $.ajax({
-            url: location.origin + '/mailing/create_message',
+            url: location.origin + "{% url 'message:create_message' %}",
             method: 'get',
             dataType: "html",
             success: function(data){
