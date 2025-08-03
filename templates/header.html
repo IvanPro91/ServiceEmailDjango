@@ -17,7 +17,18 @@
 
                 <script>
                     $("#btn_open_auth").click(function(){
-                        $("#modalCenter").modal('show')
+                     $.ajax({
+                        url: location.origin + "{% url 'user:form_auth' %}",
+                        method: 'get',
+                        dataType: "html",
+                        success: function(data){
+                             $("#auth_modal_content").html(data)
+                             $("#modalCenter").modal('show')
+                        },
+                        error: function (jqXHR, exception) {
+                            alert('Uncaught Error. ' + jqXHR.responseText);
+                        }
+                    });
                     })
                 </script>
             {% else %}
@@ -31,8 +42,6 @@
                           <small class="text-body-secondary">
                               {% if user.is_superuser %}
                                 Администратор
-                              {% else %}
-                                Пользователь
                               {% endif %}
                           </small>
                     </div>

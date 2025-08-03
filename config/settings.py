@@ -9,10 +9,15 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
+
 import os
 from pathlib import Path
 
-from django.conf.global_settings import STATICFILES_DIRS, LOGOUT_REDIRECT_URL
+from django.conf.global_settings import (EMAIL_HOST, EMAIL_HOST_PASSWORD,
+                                         EMAIL_HOST_USER, EMAIL_PORT,
+                                         EMAIL_USE_SSL, EMAIL_USE_TLS,
+                                         LOGIN_REDIRECT_URL,
+                                         LOGOUT_REDIRECT_URL, STATICFILES_DIRS)
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -46,6 +51,7 @@ INSTALLED_APPS = [
     "recipients",
     "mailing",
     "message",
+    "main",
 ]
 
 MIDDLEWARE = [
@@ -88,7 +94,7 @@ DATABASES = {
         "USER": os.getenv("DB_USER"),
         "PASSWORD": os.getenv("DB_PASSWORD"),
         "HOST": os.getenv("DB_HOST"),
-        "PORT": os.getenv("DB_PORT")
+        "PORT": os.getenv("DB_PORT"),
     }
 }
 
@@ -124,9 +130,9 @@ USE_I18N = True
 USE_TZ = True
 
 CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
-        'LOCATION': 'redis://127.0.0.1:6379/1',
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
     }
 }
 
@@ -136,9 +142,17 @@ CACHES = {
 STATIC_URL = "static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 MEDIA_URL = "media/"
-MEDIA_ROOT = [BASE_DIR / "media"]
-LOGOUT_REDIRECT_URL = '/'
+MEDIA_ROOT = BASE_DIR / "media"
+LOGOUT_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL = "/"
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 AUTH_USER_MODEL = "user.User"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+EMAIL_HOST = os.getenv("EMAIL_HOST")
+EMAIL_PORT = os.getenv("EMAIL_PORT")
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS") == "True"
+EMAIL_USE_SSL = os.getenv("EMAIL_USE_SSL") == "True"

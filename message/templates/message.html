@@ -26,17 +26,23 @@
                     {{ message.body }}
                 </td>
                 <td>
+                    {% if perms.message.can_delete_message or perms.message.can_update_message or message.owner.id == user.id %}
                     <div class="dropdown">
                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                             <i class="icon-base bx bx-dots-vertical-rounded"></i>
                         </button>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="{{ message.pk }}"><i
-                                    class="icon-base bx bx-edit-alt me-1"></i> Редактировать</a>
-                            <a class="dropdown-item" href="{{ message.pk }}"><i
-                                    class="icon-base bx bx-trash me-1"></i> Удалить</a>
+                            {% if perms.message.can_update_message or message.owner.id == user.id %}
+                            <a class="dropdown-item btn_update_message cursor-pointer" id_message="{{ message.pk }}">
+                                <i class="icon-base bx bx-edit-alt me-1"></i> Редактировать</a>
+                            {% endif %}
+                            {% if perms.message.can_delete_message or message.owner.id == user.id %}
+                            <a class="dropdown-item btn_delete_message cursor-pointer" id_message="{{ message.pk }}">
+                                <i class="icon-base bx bx-trash me-1"></i> Удалить</a>
+                            {% endif %}
                         </div>
                     </div>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}
@@ -47,6 +53,39 @@
 </div>
 
 <script>
+
+    $(".btn_update_message").click(function(){
+        let id_message = $(this).attr("id_message")
+        $.ajax({
+            url: location.origin + "/message/update_message/" + id_message,
+            method: 'get',
+            dataType: "html",
+            success: function(data){
+                $("#modal-cont").html(data)
+                $("#modal-mail").modal("show")
+            },
+            error: function (jqXHR, exception) {
+                alert('Uncaught Error. ' + jqXHR.responseText);
+            }
+        });
+    })
+
+    $(".btn_delete_message").click(function(){
+        let id_message = $(this).attr("id_message")
+        $.ajax({
+            url: location.origin + "/message/delete_message/" + id_message,
+            method: 'get',
+            dataType: "html",
+            success: function(data){
+                $("#modal-cont").html(data)
+                $("#modal-mail").modal("show")
+            },
+            error: function (jqXHR, exception) {
+                alert('Uncaught Error. ' + jqXHR.responseText);
+            }
+        });
+    })
+
     $("#btn_create_message").click(function(){
         $.ajax({
             url: location.origin + "{% url 'message:create_message' %}",

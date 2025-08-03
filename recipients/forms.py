@@ -8,10 +8,8 @@ class RecipientForm(ModelForm):
         super(RecipientForm, self).__init__(*args, **kwargs)
 
         for field in self._meta.fields:
-            self.fields[field].widget.attrs.update({
-                'class': 'form-control'
-            })
+            self.fields[field].widget.attrs.update({"class": "form-control"})
 
     class Meta:
         model = Recipient
-        fields = ('email', 'full_name', 'comments')
+        fields = ("email", "full_name", "comments")

@@ -8,9 +8,7 @@ class MessageForm(ModelForm):
         super(MessageForm, self).__init__(*args, **kwargs)
 
         for field in self._meta.fields:
-            self.fields[field].widget.attrs.update({
-                'class': 'form-control'
-            })
+            self.fields[field].widget.attrs.update({"class": "form-control"})
 
     class Meta:
         model = Message
