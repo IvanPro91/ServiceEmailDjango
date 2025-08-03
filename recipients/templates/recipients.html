@@ -23,11 +23,13 @@
                         <small>{{ recipient.email }}</small>
                     </div>
                 </div>
+                {% if perms.message.can_delete_recipient or recipient.owner.id == user.id %}
                 <div class="ms-auto">
                     <a class="btn btn-label-primary btn-icon btn_delete_recipient" id="{{ recipient.pk }}">
                         <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="red"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
                     </a>
                 </div>
+                {% endif %}
             </div>
         </li>
         {% endfor %}
@@ -39,7 +41,7 @@
     $(".btn_delete_recipient").click(function(){
         let id_r = $(this).attr("id")
         $.ajax({
-            url: location.origin + "/delete_recipient/" + id_r,
+            url: location.origin + "/recipient/delete_recipient/" + id_r,
             method: 'get',
             dataType: "html",
             success: function(data){

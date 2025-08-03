@@ -66,38 +66,82 @@
 
     <ul class="menu-inner py-1">
         <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Меню</span>
+        </li>
+
+        <li class="menu-item">
+            <a href="{% url 'main:home' %}" class="menu-link">
+                <div class="text-truncate">Главная</div>
+            </a>
+        </li>
+        {% if user.is_authenticated %}
+        <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Получатели и рассылки</span>
         </li>
         <li class="menu-item">
             <a href="{% url 'recipients:recipients' %}" class="menu-link">
-                <div class="text-truncate" data-i18n="users">Получатели</div>
+                <div class="text-truncate">Получатели</div>
             </a>
         </li>
         <li class="menu-item">
             <a href="{% url 'mailing:mailing' %}" class="menu-link">
-                <div class="text-truncate" data-i18n="email_service">Рассылки</div>
+                <div class="text-truncate">Рассылки</div>
             </a>
         </li>
 
         <li class="menu-item">
             <a href="{% url 'message:message' %}" class="menu-link">
-                <div class="text-truncate" data-i18n="email_service">Сообщения</div>
+                <div class="text-truncate">Сообщения</div>
             </a>
         </li>
-
+        {% endif %}
+        {% if not user.is_authenticated %}
          <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Авторизация</span>
         </li>
 
         <li class="menu-item">
-            <a href="#" class="menu-link">
+            <a id="btnmenu_open_auth" class="menu-link cursor-pointer">
                 <div class="text-truncate">Вход</div>
             </a>
+            <script>
+                    $("#btnmenu_open_auth").click(function(){
+                     $.ajax({
+                        url: location.origin + "{% url 'user:form_auth' %}",
+                        method: 'get',
+                        dataType: "html",
+                        success: function(data){
+                             $("#auth_modal_content").html(data)
+                             $("#modalCenter").modal('show')
+                        },
+                        error: function (jqXHR, exception) {
+                            alert('Uncaught Error. ' + jqXHR.responseText);
+                        }
+                    });
+                    })
+            </script>
         </li>
         <li class="menu-item">
-            <a href="#" class="menu-link">
+            <a id="btnmenu_open_reg" class="menu-link cursor-pointer">
                 <div class="text-truncate">Регистрация</div>
             </a>
+             <script>
+                    $("#btnmenu_open_reg").click(function(){
+                     $.ajax({
+                        url: location.origin + "{% url 'user:form_reg' %}",
+                        method: 'get',
+                        dataType: "html",
+                        success: function(data){
+                             $("#auth_modal_content").html(data)
+                             $("#modalCenter").modal('show')
+                        },
+                        error: function (jqXHR, exception) {
+                            alert('Uncaught Error. ' + jqXHR.responseText);
+                        }
+                    });
+                    })
+            </script>
         </li>
+        {% endif %}
     </ul>
 </aside>

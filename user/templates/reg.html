@@ -1,10 +1,68 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<div class="modal-header">
+    <h5 class="modal-title" id="modalCenterTitle">Регистрация</h5>
+    <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"></button>
+</div>
+<div class="modal-body">
+    <div class="authentication-wrapper authentication-basic container-p-y">
+        <div class="authentication-inner">
+            <!-- Register -->
+            <div class="px-0">
+                <div class="card-body">
+                    <!-- Logo -->
+                    <div class="app-brand justify-content-center">
+                        <a href="{% url 'main:home' %}" class="app-brand-link gap-2">
+                            <span class="app-brand-text demo text-heading fw-bold">Сервис рассылок</span>
+                        </a>
+                    </div>
+                    <!-- /Logo -->
+                    <h4 class="mb-1">Регистрация пользователя</h4>
 
-</body>
-</html>
+                    <form class="mb-6" method="post" action="{% url 'user:registration' %}">
+                        {% csrf_token %}
+                        <div class="mb-6">
+                            <label for="email" class="form-label">Email</label>
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    id="email"
+                                    name="email-username"
+                                    placeholder="Введите email"
+                                    autofocus/>
+                        </div>
+                        <div class="mb-6 form-password-toggle">
+                            <label class="form-label" for="password">Пароль</label>
+                            <div class="input-group input-group-merge">
+                                <input
+                                        type="password"
+                                        id="password"
+                                        class="form-control"
+                                        name="password"
+                                        aria-describedby="password"/>
+                                <span class="input-group-text cursor-pointer"></span>
+                            </div>
+                        </div>
+                        <div class="mb-6 form-password-toggle">
+                            <label class="form-label" for="password">Повторите пароль</label>
+                            <div class="input-group input-group-merge">
+                                <input
+                                        type="password"
+                                        id="password2"
+                                        class="form-control"
+                                        name="password2"
+                                        aria-describedby="password"/>
+                                <span class="input-group-text cursor-pointer"></span>
+                            </div>
+                        </div>
+                        <div class="mb-6">
+                            <button class="btn btn-primary d-grid w-100" type="submit">Регистрация</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
