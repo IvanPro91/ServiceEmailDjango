@@ -22,7 +22,6 @@ def start_sending_message(mailing: Mailing):
                     from_email=EMAIL_HOST_USER,
                 )
             except Exception as err:
-                print("asdasd")
                 report.append(
                     f"{datetime.datetime.now()} - {recipient.email} ошибка - {err}"
                 )

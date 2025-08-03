@@ -1,6 +1,7 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import PermissionDenied
-from django.urls import reverse_lazy
+from django.shortcuts import redirect
+from django.urls import reverse_lazy, reverse
 from django.views.generic import DeleteView, ListView, UpdateView
 from django.views.generic.edit import CreateView
 
@@ -32,7 +33,8 @@ class MailingCreateView(LoginRequiredMixin, CreateView):
         mailing.owner = user
 
         if not (user.is_superuser or user.has_perm("mailing.can_create_mailing")):
-            raise PermissionDenied
+            messages.error(self.request, "Ошибка прав доступа!")
+            return redirect(reverse("main:home"))
 
         mailing.save()
         form.save_m2m()
@@ -49,7 +51,8 @@ class MailingDeleteView(LoginRequiredMixin, DeleteView):
         user = self.request.user
         if user.is_superuser or user.has_perm("mailing.can_delete_mailing"):
             return super().delete(request, *args, **kwargs)
-        raise PermissionDenied
+        messages.error(self.request, "Ошибка прав доступа!")
+        return redirect(reverse("main:home"))
 
 
 class MailingUpdateView(LoginRequiredMixin, UpdateView):
@@ -69,4 +72,5 @@ class MailingUpdateView(LoginRequiredMixin, UpdateView):
         ):
             mailing.save()
             return super().form_valid(form)
-        raise PermissionDenied
+        messages.error(self.request, "Ошибка прав доступа!")
+        return redirect(reverse("main:home"))
