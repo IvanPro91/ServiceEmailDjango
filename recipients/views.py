@@ -1,15 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse_lazy
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_page
 from django.views.generic import CreateView, DeleteView, ListView
 
 from recipients.forms import RecipientForm
 from recipients.models import Recipient
 
 
-@method_decorator(cache_page(60 * 15), name="dispatch")
 class RecipientsListView(LoginRequiredMixin, ListView):
     model = Recipient
     template_name = "recipients.html"

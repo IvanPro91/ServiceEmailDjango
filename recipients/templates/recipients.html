@@ -41,7 +41,7 @@
     $(".btn_delete_recipient").click(function(){
         let id_r = $(this).attr("id")
         $.ajax({
-            url: location.origin + "/delete_recipient/" + id_r,
+            url: location.origin + "/recipient/delete_recipient/" + id_r,
             method: 'get',
             dataType: "html",
             success: function(data){

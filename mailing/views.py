@@ -1,8 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse_lazy
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_page
 from django.views.generic import DeleteView, ListView, UpdateView
 from django.views.generic.edit import CreateView
 
@@ -11,7 +9,6 @@ from mailing.models import Mailing
 from mailing.services import start_sending_message
 
 
-@method_decorator(cache_page(60 * 15), name="dispatch")
 class MailingListView(LoginRequiredMixin, ListView):
     model = Mailing
     template_name = "mailing.html"
@@ -32,15 +29,15 @@ class MailingCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         mailing: Mailing = form.save(commit=False)
         user = self.request.user
-        if user.is_superuser or user.has_perm("mailing.can_create_mailing"):
-            mailing.owner = self.request.user
-            form.save_m2m()
-            mailing.status_ending = Mailing.STATUS_CREATED
-            mailing.save()
+        mailing.owner = user
 
-            start_sending_message(mailing)
-            return super().form_valid(form)
-        raise PermissionDenied
+        if not (user.is_superuser or user.has_perm("mailing.can_create_mailing")):
+            raise PermissionDenied
+
+        mailing.save()
+        form.save_m2m()
+        start_sending_message(mailing)
+        return super().form_valid(form)
 
 
 class MailingDeleteView(LoginRequiredMixin, DeleteView):

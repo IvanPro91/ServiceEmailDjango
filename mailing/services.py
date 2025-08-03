@@ -11,8 +11,8 @@ def start_sending_message(mailing: Mailing):
     report = []
     mailing.status_ending = Mailing.STATUS_STARTED
     mailing.save()
-    for recipient in mailing.recipients:
-        if not mailing.status_ending:
+    for recipient in mailing.recipients.all():
+        if not mailing.status_ending == 'completed':
             message: Message = mailing.message
             try:
                 send_mail(
@@ -22,6 +22,7 @@ def start_sending_message(mailing: Mailing):
                     from_email=EMAIL_HOST_USER,
                 )
             except Exception as err:
+                print("asdasd")
                 report.append(
                     f"{datetime.datetime.now()} - {recipient.email} ошибка - {err}"
                 )
